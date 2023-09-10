@@ -50,15 +50,30 @@ def getADC(channel):
 
     return ad
 
+# Function to convert ADC value to lux
+def adc_to_lux(adc_value):
+    # You may need to calibrate this based on your photoresistor and lighting conditions
+    # A simple linear approximation for demonstration purposes
+    return adc_value * 10.0 / 255.0  # Assuming a range of 0-255 for ADC values
+
 if __name__ == "__main__":
     try:
         while True:
             adc0 = getADC(0)
             adc1 = getADC(1)
-            voltage0 = 3.3 * adc0 / 255
-            voltage1 = 3.3 * adc1 / 255
-            print("Analog value: %03d || Voltage: %.2fV" % (adc0, voltage0))
-            print("Analog value: %03d || Voltage: %.2fV" % (adc1, voltage1))
+            lux0 = adc_to_lux(adc0)
+            lux1 = adc_to_lux(adc1)
+
+            if lux0 < 10.0:
+                print("ADC[0]: {} || Lux: {:.2f} || Status: dark".format(adc0, lux0))
+            else:
+                print("ADC[0]: {} || Lux: {:.2f} || Status: light".format(adc0, lux0))
+
+            if lux1 < 10.0:
+                print("ADC[1]: {} || Lux: {:.2f} || Status: dark".format(adc1, lux1))
+            else:
+                print("ADC[1]: {} || Lux: {:.2f} || Status: light".format(adc1, lux1))
+
             time.sleep(1)
     except KeyboardInterrupt:
         GPIO.cleanup()
