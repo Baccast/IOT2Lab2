@@ -55,7 +55,10 @@ if __name__ == "__main__":
         while True:
             adc0 = getADC(0)
             adc1 = getADC(1)
-            print("ADC[0]: {}\t ADC[1]: {}".format(adc0, adc1))
+            voltage0 = 3.3 * adc0 / 255
+            voltage1 = 3.3 * adc1 / 255
+            print("Analog value: %03d || Voltage: %.2fV" % (adc0, voltage0))
+            print("Analog value: %03d || Voltage: %.2fV" % (adc1, voltage1))
             time.sleep(1)
     except KeyboardInterrupt:
         GPIO.cleanup()
